@@ -25,7 +25,7 @@ var ingredients = {
            dbo.collection("ingredients").find({"category": req.query.category}).toArray(function(err, data) {
                 if (err) throw err;
                 db.close();
-                return(res.send(data.map(ingredient => new Ingredient(ingredient))));
+                return(res.send(data.map(ingredient => new Ingredient(ingredient).data)));
             });
         });
     },
@@ -41,8 +41,9 @@ var ingredients = {
     },
     
     updateSynonyme: function(req, res){
+        console.log( req.body )
         database.connect( (db,dbo) => {
-            let values = {$push : {synonyme : req.body.ingredient }};
+            let values = {$push : {synonyme : req.body.ingredient.replace(/^ +/gm, '') }};
             let id = { _id : ObjectID(req.body.id)}
             dbo.collection("ingredients").update( id, values,function(err, result){
                if (err) throw err;

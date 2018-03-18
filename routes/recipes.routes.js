@@ -4,16 +4,19 @@ const database = require('../services/db.service')
 
 
 var recipes = {
-    
+    /*Attention a bien mettre data*/
     getRecipes: function(req, res){
-        database.getAll("recipes",req.query,(recipes) =>                            res.send(recipes.map(recipe => new Recipe(recipe)))
+        database.getAll("recipes",req.query,(recipes) => {
+             res.send(recipes.map(recipe => new Recipe(recipe).data))
+            }
         )
     },      
     
     getRecipesById: function(req, res){
         database.getById("recipes",req.params.id,(recipe) =>
-           res.send(recipe) 
-        )
+           res.send(new Recipe(recipe).data)
+        ) 
+        
     },
     
     getAJR: function(req,res){

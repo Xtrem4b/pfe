@@ -10,12 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "lodash": "^4.17.5",
     "mongodb": "^3.0.3",
     "path": "^0.12.7",
-    "request": "^2.83.0",
+    "request": "^2.85.0",
     "request-promise": "^4.2.2"
   }
 }

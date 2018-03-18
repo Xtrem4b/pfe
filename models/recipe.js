@@ -7,7 +7,7 @@ var Recipe = function (data) {
 
 Recipe.prototype.sanitize = function (data) {
     data = data || {};
-    schema = shemas.ingredient;
+    schema = shemas.recipe;
     return _.pick(_.defaults(data, schema), _.keys(schema));
 }
 

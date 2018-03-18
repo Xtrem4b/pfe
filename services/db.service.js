@@ -43,7 +43,7 @@ var database = {
             dbo.collection(collection).update( id, values,function(err,result){
                 if (err) throw err;
                 db.close()
-                return(res.send(result));
+                callback(result)
             })
         })
     }

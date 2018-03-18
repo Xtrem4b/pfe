@@ -7,7 +7,7 @@ var User = function (data) {
 
 User.prototype.sanitize = function (data) {
     data = data || {};
-    schema = shemas.ingredient;
+    schema = shemas.user;
     return _.pick(_.defaults(data, schema), _.keys(schema));
 }
 

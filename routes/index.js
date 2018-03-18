@@ -1,8 +1,8 @@
 var ingredients = require('./ingredients.routes.js');
 var recipes = require('./recipes.routes.js');
+var users = require('./users.routes.js');
 
 module.exports = function(app){
-require('./users.routes')(app)
     
     
 /*return all categories*/
@@ -13,14 +13,25 @@ app.get('/ingredients/category', ingredients.category)
 app.get('/ingredients/:id', ingredients.ingredientById)
 /*update the list of synonymes of the ingredient with id in params*/
 app.put('/ingredients/update', ingredients.updateSynonyme)
-
 /*return all recipes (with limit option and skip option)*/
 app.get('/recipes', recipes.getRecipes)
 /*return recipe by id*/
 app.get('/recipe/:id', recipes.getRecipesById)
 
 app.get('/recipe/ajr/:id', recipes.getAJR)
-
+    
+app.post('/login', users.login)
+    
+app.get("/openFoodFact/:id", users.getFoodFromCode)
+    
+app.post('/register',users.register)
+    
+app.put('/profil/update',users.updateProfil)
+    
+app.post('/profil/update/processedFood',users.addEatenProcessedFood)
+    
+app.post('/profil/update/eatenRecipe',users.addEatenRecipe)
+    
 //app.put('/recipe/update/:id', recipes.updateSynonyme)
 
 }

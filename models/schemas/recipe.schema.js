@@ -1,5 +1,5 @@
 schemas = {
-    ingredient : {
+    recipe : {
         _id : null,
         title: null,
         ingredients: [],
