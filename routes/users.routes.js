@@ -1,5 +1,5 @@
 const userService = require('../services/user.service');
-
+const foodService = require('../services/food.service');
 
 var users = {
     
@@ -55,28 +55,25 @@ var users = {
                 res.send("error")
             }
         })
+    },
+    
+    GetUserAJR : function(req,res){
+        userService.getLunch(req.params.id,function(data){
+            foodService.calculAJR(data,function(ajr){
+                userService.getInfo(req.params.id,function(info){
+                    ajr["sexe"] = info.sexe;
+                    ajr["age"] = parseInt(info.age);
+                    ajr["taille"] = (parseFloat(info.taille)/100);
+                    ajr["poids"] = parseFloat(info.poid);
+                    ajr["IMC"] = parseFloat(info.poid)/(Math.pow((parseFloat(info.taille)/100), 2));
+                    ajr["tabac"] = parseInt(info.tabac);
+                    ajr["activite"] = parseInt(info.activite);
+                    ajr["type_alim"] = parseInt(info.alimentation);
+                    res.send(ajr);
+                })
+            })
+        })
     }
     
 }
 module.exports = users;
-
-/*
-module.exports = function(app){
-
-
-app.get('/user/authenticate', function (req,res){res.send("toto")})
-
-app.get('/user/information', function (req,res){res.send("toto")})
-
-app.get('/user/ajr/:id', function (req,res){res.send("toto")})
-
-app.get('/user/ingredients', function (req,res){res.send("toto")})
-    
-app.post('/user/new/recipe', function (req,res){res.send("toto")})
-
-app.post('/user/add/launch', function (req,res){res.send("toto")})
-
-app.delete('/user/delete/launch', function (req,res){res.send("toto")})
-
-}*/
-
