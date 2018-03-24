@@ -26,10 +26,10 @@ var ingredients = {
         })
     },
     
-    
+    //TODO: Abstract this method, use template
     getFromSwissCSV: function(){
         return new Promise((resolve,reject) => {
-            var dataArr = [];
+            var dataArray = [];
             csv.fromPath("./services/swiss.csv", {headers: true})
             .on("data", data => {
                let ingredient = {
@@ -47,7 +47,7 @@ var ingredients = {
                dataArr.push(ingredient);
             })
             .on("end", () => {
-                resolve(dataArr);
+                resolve(dataArray);
             });
          })
     },
