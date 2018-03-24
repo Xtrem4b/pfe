@@ -32,7 +32,11 @@ app.post('/profil/update/processedFood',users.addEatenProcessedFood)
     
 app.post('/profil/update/eatenRecipe',users.addEatenRecipe)
     
-app.get('/test/getAJR/:id',users.GetUserAJR)    
+app.get('/test/getAJR/:id',users.GetUserAJR)
+    
+app.get('/api/drop/ingredients',ingredients.reset)
+    
+app.get('/api/create/ingredients',ingredients.create)
     
 //app.put('/recipe/update/:id', recipes.updateSynonyme)
 

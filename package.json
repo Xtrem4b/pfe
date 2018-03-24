@@ -13,6 +13,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
+    "fast-csv": "^2.4.1",
     "lodash": "^4.17.5",
     "mongodb": "^3.0.3",
     "path": "^0.12.7",

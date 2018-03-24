@@ -7,6 +7,8 @@ const ObjectID = require('mongodb').ObjectID;
 var Ingredient = require('../models/ingredient')
 
 var database = require('../services/db.service')
+var ingredient_service = require('../services/ingredients.service')
+//var ingredientsService = require('../services')
 
 var ingredients = {
 
@@ -41,7 +43,6 @@ var ingredients = {
     },
     
     updateSynonyme: function(req, res){
-        console.log( req.body )
         database.connect( (db,dbo) => {
             let values = {$push : {synonyme : req.body.ingredient.replace(/^ +/gm, '') }};
             let id = { _id : ObjectID(req.body.id)}
@@ -51,6 +52,18 @@ var ingredients = {
                 db.close();
             });
         });
+    },
+    
+    reset: function(req,res){
+        ingredient_service.reset((msg) => {
+            res.send(msg);
+        })
+    },
+    
+    create: function(req,res){
+        ingredient_service.create((msg) => {
+            res.send(msg)
+        })
     }
     
 }
