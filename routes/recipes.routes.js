@@ -21,9 +21,13 @@ var recipes = {
     
     getAJR: function(req,res){
         database.getById("recipes",req.params.id,(recipe) => {
-            ingredient_service.getBySynonyme(recipe.ingredients.map(x => x.ingredient.replace(/^ +/gm, '')),(ingredients) => 
-                res.send(ingredients)
-                )
+            if (recipe){
+                ingredient_service.getBySynonyme(recipe.ingredients.map(x => x.ingredient.replace(/^ +/gm, '')),(ingredients) => 
+                    res.send(ingredients)
+                    )
+            }else{
+                res.send("erreur")
+            }
         })
     }
     

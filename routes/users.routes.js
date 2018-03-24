@@ -17,7 +17,7 @@ var users = {
     },
     
     login : function(req, res){
-        userService.login(req.body.email,req.body.password, function(user){                         
+        userService.login(req.body.email,req.body.password, function(user){
             res.send(user)
         })
     },

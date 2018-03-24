@@ -6,55 +6,36 @@ const request = require('request');
 var userService = {
     
     register : function(user,callback) {
-        database.connect( (db,dbo) => {
-            dbo.collection("users").findOne({email:user.email},function (err,u){
-                if (u) {
-                    callback()
-                }else{
-                    dbo.collection("users").insert({
+        database.findOne("users",{email:user.email},(isIn) =>{
+            if (isIn){
+                callback("L'utilisateur existe déjà")
+            }else{
+                let data = {
                         email: user.email,
                         password: user.password,
                         pseudo: user.login,
                         information: null,
                         lunch: []
-                    },function(err,res){
-                        if (err){
-                            throw err;
                         }
-                        else {
-                            callback(res);
-                        }
-                    })
-                }
-            })
+                database.insert("users",data,(msg) => callback(msg))
+            }
         })
     },
     
     
     updateProfil : function(user,callback){
-        console.log(user)
-        database.connect( (db,dbo) => {
-            let newvalues = {$set: {information: {sexe: user.sexe, age: user.age, taille : user.taille, poid : user.poid, tabac: user.tabac, activite : user.activite, alimentation: user.alimentation}
-            }}
-            dbo.collection("users").update({ _id: ObjectID(user.id) },newvalues,function(err,res){
-                if (err) throw err;
-                callback(res)
-            })
-        })
+        let values = {$set: {information: {sexe: user.sexe, age: user.age, taille : user.taille, poid : user.poid, tabac: user.tabac, activite : user.activite, alimentation: user.alimentation}}};
+        
+        database.update("users",user.id,values,(msg) => callback(msg))
     },
     
     login: function(email,password,callback) {
-        database.connect( (db,dbo) => {
-            dbo.collection("users").findOne({email: email, password: password}, function (err, user){
-                if (err){
-                    throw err;
-                }
-                if (user){
-                    callback(user)
-                }else{
-                    callback()
-                }
-            })
+        database.findOne("users",{email: email, password: password},(user) => {
+            if (user){
+                callback(user)
+            }else{
+                callback("Aucun utilisateur")
+            }
         })
     },
     
@@ -66,9 +47,7 @@ var userService = {
     
     getLunch: function(id,callback) {
         database.getById("users",id,function(user){
-            if (user){
-                 callback(user.lunch)
-            }
+            callback(user)
         })
     },
     
@@ -76,22 +55,16 @@ var userService = {
         database.getById("recipes",recipeID,function(data){
             let recipe = {id:data._id,title:data.title,ingredient:data.ingredients}
             let values = {$push : {lunch : {recipe: recipe, lunchType: lunchType}} };
-            database.update("users",{ _id: ObjectID(id)} ,values, function(result){
-                if (result){
-                    callback(result)
-                }
+            database.update("users",id,values, function(result){
+                callback(result)
             })
         })   
     },
     
     addProcessedFood: function(id,food,lunchType,callback){
         let values ={$push : {lunch : {processedFood: food, lunchType: lunchType }} };
-         database.update("users",{ _id: ObjectID(id)},values, function(result){
-             if (result){
-                 callback(result)
-            }else{
-                callback()
-            }
+         database.update("users",id,values, function(result){
+            callback(result)
         })
     },
     
@@ -110,7 +83,7 @@ var userService = {
                         sel:product.product.nutriments.salt
                     }
             };
-            return callback(productInfo);
+            callback(productInfo)
         })
     }
     

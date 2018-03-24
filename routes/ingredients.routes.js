@@ -13,57 +13,29 @@ var ingredient_service = require('../services/ingredients.service')
 var ingredients = {
 
     categories: function(req, res){
-        database.connect( (db,dbo) => {
-           dbo.collection("ingredients").distinct("category", function(err, data) {
-                if (err) throw err;
-                db.close();
-                return(res.send(data));
-            });
-        });
+        database.getDistinct("ingredients","category",(data) => res.send(data))
     },
     
-    category: function(req, res){
-        database.connect( (db,dbo) => {
-           dbo.collection("ingredients").find({"category": req.query.category}).toArray(function(err, data) {
-                if (err) throw err;
-                db.close();
-                return(res.send(data.map(ingredient => new Ingredient(ingredient).data)));
-            });
-        });
+    category: function(req, res){   
+        let options = (req.query.category) ? {query:{"category":req.query.category}} : {};
+        database.getAll("ingredients",options,(data) => res.send(data))
     },
     
     ingredientById: function(req, res){
-        database.connect( (db,dbo) => {
-           dbo.collection("ingredients").findOne({"_id": ObjectID(req.params.id)},function(err, data) {
-                if (err) throw err;
-                db.close();
-                return(res.send(new Ingredient(data)));
-            });
-        });
+        database.getById("ingredients",req.params.id,(data) => res.send(new Ingredient(data).data))
     },
     
     updateSynonyme: function(req, res){
-        database.connect( (db,dbo) => {
-            let values = {$push : {synonyme : req.body.ingredient.replace(/^ +/gm, '') }};
-            let id = { _id : ObjectID(req.body.id)}
-            dbo.collection("ingredients").update( id, values,function(err, result){
-               if (err) throw err;
-                return(res.send(result));
-                db.close();
-            });
-        });
+        let values = {$push : {synonyme : req.body.ingredient.replace(/^ +/gm, '') }};
+        database.update("ingredients",req.body.id,values,(data) => res.send(result))
     },
     
     reset: function(req,res){
-        ingredient_service.reset((msg) => {
-            res.send(msg);
-        })
+        ingredient_service.reset((msg) => {res.send(msg)})
     },
     
     create: function(req,res){
-        ingredient_service.create((msg) => {
-            res.send(msg)
-        })
+        ingredient_service.create((msg) => {res.send(msg)})
     }
     
 }
