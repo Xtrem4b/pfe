@@ -38,6 +38,8 @@ app.get('/api/drop/ingredients',ingredients.reset)
     
 app.get('/api/create/ingredients',ingredients.create)
     
+app.post('/api/new/recipe',recipes.addRecipe)
+    
 //app.put('/recipe/update/:id', recipes.updateSynonyme)
 
 }

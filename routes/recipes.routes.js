@@ -1,6 +1,7 @@
 var Recipe = require('../models/recipe')
 var ingredient_service = require('../services/ingredients.service');
 const database = require('../services/db.service')
+const recipe_service = require('../services/recipes.service');
 
 
 var recipes = {
@@ -29,6 +30,10 @@ var recipes = {
                 res.send("erreur")
             }
         })
+    },
+    
+    addRecipe : function(req,res){
+        recipe_service.getRecipeFromUrl(req.body.url,(msg) => res.send(msg));
     }
     
 }
