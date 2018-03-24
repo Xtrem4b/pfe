@@ -44,7 +44,7 @@ var ingredients = {
                     "cholesterol" : data["cholesterol"],
                     "sodium" : data["sodium (Na)"]
                 }
-               dataArr.push(ingredient);
+               dataArray.push(ingredient);
             })
             .on("end", () => {
                 resolve(dataArray);
