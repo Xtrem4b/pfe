@@ -13,6 +13,7 @@ var database = {
     },
     
     insert: function(collection,data,callback) {
+        data["createdAt"] = new Date() ;
         database.connect((db,dbo) => {
             dbo.collection(collection).insert(data,function (err,data){
                 if (err) throw err;
@@ -35,6 +36,16 @@ var database = {
     getById: function(collection,id,callback){
         database.connect( (db,dbo) => {
            dbo.collection(collection).findOne({_id : ObjectID(id)}, function(err, data) {
+                if (err) throw err;
+                db.close();
+                callback(data)
+            });
+        });
+    },
+    
+    getLunchByDays: function(id,days,callback){
+        database.connect( (db,dbo) => {
+           dbo.collection("users").findOne({_id: ObjectID(id) ,lunch:{ $elemMatch : {createdAt: {$gte: new Date((new Date().getTime() - (days * 24 * 60 * 60 * 1000)))}} }},function(err, data) {
                 if (err) throw err;
                 db.close();
                 callback(data)
@@ -68,7 +79,9 @@ var database = {
     
     update: function(collection,id,values,callback){
         database.connect( (db,dbo) => {
-            dbo.collection(collection).update({_id : ObjectID(id)}, values,function(err,result){
+            dbo.collection(collection).update({_id : ObjectID(id)}, {
+             $push: values 
+            },function(err,result){
                 if (err) throw err;
                 db.close()
                 callback(result)

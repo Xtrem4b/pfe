@@ -3,7 +3,8 @@ const database = require('../services/db.service')
 
 var foodService = {
     
-    calculAJR: function(data,callback){
+    /* Add gramme choice */
+    calculAJR: function(data,days,callback){
         let res = data.map(x => {
             if (x.processedFood){
                 let nutriments = foodService.calculProcessedFood(x.processedFood)
@@ -41,7 +42,7 @@ var foodService = {
                 return "undefined"
             }
         })
-        callback(foodService.completeTemplate(res))
+        callback(foodService.completeTemplate(res,days))
     },
     
     calculProcessedFood(data){
@@ -62,7 +63,7 @@ var foodService = {
         }
     },
     
-    completeTemplate(data){
+    completeTemplate(data,days){
         let template = {
           "cal_pdej":0,
           "lip_pdej":0,
@@ -93,8 +94,16 @@ var foodService = {
             template[Object.keys(x)[2]]+=Object.values(x)[2]
             template[Object.keys(x)[3]]+=Object.values(x)[3]
             template[Object.keys(x)[4]]+=Object.values(x)[4]
+            template.cal_jour+=Object.values(x)[0]
+            template.lip_jour+=Object.values(x)[1]
+            template.glu_jour+=Object.values(x)[2]
+            template.sel_jour+=Object.values(x)[3]
+            template.prot_jour+=Object.values(x)[4]
             }
         })
+        for(key in template){
+            template[key] = template[key]/days
+        }
         return template
     }
     

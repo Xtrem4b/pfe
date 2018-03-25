@@ -6,40 +6,56 @@ module.exports = function(app){
     
     
 /*return all categories*/
-app.get('/ingredients/categories', ingredients.categories)
+app.get('/api/ingredients/categories', ingredients.categories)
 /*return ingredient from the categorie in params*/
-app.get('/ingredients/category', ingredients.category)
+app.get('/api/ingredients/category', ingredients.category)
 /*return ingredient from his id*/
-app.get('/ingredients/:id', ingredients.ingredientById)
+app.get('/api/ingredients/:id', ingredients.ingredientById)
 /*update the list of synonymes of the ingredient with id in params*/
-app.put('/ingredients/update', ingredients.updateSynonyme)
+app.put('/api/ingredients/update', ingredients.updateSynonyme)
 /*return all recipes (with limit option and skip option)*/
-app.get('/recipes', recipes.getRecipes)
-/*return recipe by id*/
-app.get('/recipe/:id', recipes.getRecipesById)
-
-app.get('/recipe/ajr/:id', recipes.getAJR)
-    
-app.post('/login', users.login)
-    
-app.get("/openFoodFact/:id", users.getFoodFromCode)
-    
-app.post('/register',users.register)
-    
-app.put('/profil/update',users.updateProfil)
-    
-app.post('/profil/update/processedFood',users.addEatenProcessedFood)
-    
-app.post('/profil/update/eatenRecipe',users.addEatenRecipe)
-    
-app.get('/test/getAJR/:id',users.GetUserAJR)
-    
 app.get('/api/drop/ingredients',ingredients.reset)
     
 app.get('/api/create/ingredients',ingredients.create)
     
-app.post('/api/new/recipe',recipes.addRecipe)
-    
-//app.put('/recipe/update/:id', recipes.updateSynonyme)
 
+app.get('/api/recipes', recipes.getRecipes)
+/*return recipe by id*/
+app.get('/api/recipe/:id', recipes.getRecipesById)
+
+app.get('/api/recipe/ajr/:id', recipes.getAJR)
+    
+app.post('/api/new/recipe',recipes.addRecipe)
+
+    
+    
+    
+    
+app.post('/api/login', users.login)
+    
+app.get("/api/openFoodFact/:id", users.getFoodFromCode)
+    
+app.post('/api/register',users.register)
+    
+app.put('/api/profil/update',users.updateProfil)
+    
+app.post('/api/profil/update/processedFood',users.addEatenProcessedFood)
+    
+app.post('/api/profil/update/eatenRecipe',users.addEatenRecipe)
+    
+app.get('/api/profil/getAJR/:id/:days',users.GetUserAJR)
+    
+    
+    
 }
+
+/*
+{
+	"user": { "email":"meuniernat@eisti.eu",
+    "password": "123",
+    "pseudo": "meuniernat",
+    "information": null,
+    "lunch": []
+	}
+}
+*/

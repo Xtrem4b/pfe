@@ -41,12 +41,13 @@ var userService = {
     
     getInfo: function(id,callback){
         database.getById("users",id,function(data){
-            callback(data.information)
+            (data.information) ? callback(data.information) : callback({})
         })
     },
     
-    getLunch: function(id,callback) {
-        database.getById("users",id,function(user){
+    getLunch: function(id,days,callback) {
+        database.getLunchByDays(id,days,function(user){
+            console.log(user)
             callback(user)
         })
     },
@@ -54,7 +55,7 @@ var userService = {
     addEatenRecipe: function(id,recipeID,lunchType,callback){
         database.getById("recipes",recipeID,function(data){
             let recipe = {id:data._id,title:data.title,ingredient:data.ingredients}
-            let values = {$push : {lunch : {recipe: recipe, lunchType: lunchType}} };
+            let values = {lunch : {recipe: recipe, lunchType: lunchType, createdAt: new Date()}};
             database.update("users",id,values, function(result){
                 callback(result)
             })
@@ -62,7 +63,7 @@ var userService = {
     },
     
     addProcessedFood: function(id,food,lunchType,callback){
-        let values ={$push : {lunch : {processedFood: food, lunchType: lunchType }} };
+        let values ={lunch : {processedFood: food, lunchType: lunchType, createdAt: new Date() }} ;
          database.update("users",id,values, function(result){
             callback(result)
         })
@@ -85,14 +86,10 @@ var userService = {
             };
             callback(productInfo)
         })
-    }
+    }     
     
-    
-    
-    
-    
-    
-                        
+    //db.recipes.find({     createdAt: {         $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))      } })
+
 }
 
 module.exports = userService;

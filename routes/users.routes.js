@@ -58,10 +58,10 @@ var users = {
     },
     
     GetUserAJR : function(req,res){
-        userService.getLunch(req.params.id,function(data){
-            foodService.calculAJR(data,function(ajr){
+        userService.getLunch(req.params.id,req.params.days,function(data){
+            foodService.calculAJR(data.lunch,req.params.days,function(ajr){
                 userService.getInfo(req.params.id,function(info){
-                    ajr["sexe"] = info.sexe;
+                    ajr["sexe"] = info.sexe ;
                     ajr["age"] = parseInt(info.age);
                     ajr["taille"] = (parseFloat(info.taille)/100);
                     ajr["poids"] = parseFloat(info.poid);

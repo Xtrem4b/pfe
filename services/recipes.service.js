@@ -4,7 +4,6 @@ const puppeteer = require("puppeteer");
 var recipes_service = {
     
     getRecipeFromUrl: async function(url,callback){
-        console.log(url)
         let browser = await puppeteer.launch({headless: true});
         let page = await browser.newPage();
         await page.goto(url);
@@ -34,7 +33,6 @@ var recipes_service = {
                 time: time
             };
         });
-        console.log("here2")
         database.insert("recipes",recipe,(data) => callback(data))
 
         await page.waitFor(500);
