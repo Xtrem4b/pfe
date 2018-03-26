@@ -21,8 +21,7 @@ var userService = {
             }
         })
     },
-    
-    
+      
     updateProfil : function(user,callback){
         let values = {$set: {information: {sexe: user.sexe, age: user.age, taille : user.taille, poid : user.poid, tabac: user.tabac, activite : user.activite, alimentation: user.alimentation}}};
         
@@ -47,7 +46,6 @@ var userService = {
     
     getLunch: function(id,days,callback) {
         database.getLunchByDays(id,days,function(user){
-            console.log(user)
             callback(user)
         })
     },
@@ -63,7 +61,7 @@ var userService = {
     },
     
     addProcessedFood: function(id,food,lunchType,callback){
-        let values ={lunch : {processedFood: food, lunchType: lunchType, createdAt: new Date() }} ;
+        let values = {lunch : {processedFood: food, lunchType: lunchType, createdAt: new Date() }} ;
          database.update("users",id,values, function(result){
             callback(result)
         })
@@ -88,8 +86,6 @@ var userService = {
         })
     }     
     
-    //db.recipes.find({     createdAt: {         $gte: new Date((new Date().getTime() - (15 * 24 * 60 * 60 * 1000)))      } })
-
 }
 
 module.exports = userService;

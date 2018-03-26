@@ -68,7 +68,7 @@ var database = {
         let limit = (options.limit && options.limit > 0) ? options.limit : 0 ;
         let skip = (options.skip && options.skip > 0) ? options.skip : 0 ;
         database.connect( (db,dbo) => {         
-            dbo.collection(collection).find(query).skip(Math.trunc(skip)).limit(Math.trunc(limit))
+        dbo.collection(collection).find(query).skip(Math.trunc(skip)).limit(Math.trunc(limit))
                 .toArray(function(err, data) {
                     if (err) throw err;
                     db.close();
@@ -87,10 +87,7 @@ var database = {
                 callback(result)
             })
         })
-    }
-    
+    }  
 }
-    
-
 
 module.exports = database;

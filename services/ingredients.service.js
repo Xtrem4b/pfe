@@ -26,7 +26,6 @@ var ingredients = {
         })
     },
     
-    //TODO: Abstract this method, use template
     getFromSwissCSV: function(){
         return new Promise((resolve,reject) => {
             var dataArray = [];

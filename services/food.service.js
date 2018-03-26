@@ -105,9 +105,7 @@ var foodService = {
             template[key] = template[key]/days
         }
         return template
-    }
-    
-    
+    }    
 }
 
 module.exports = foodService;

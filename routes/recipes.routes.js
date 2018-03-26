@@ -5,35 +5,27 @@ const recipe_service = require('../services/recipes.service');
 
 
 var recipes = {
-    /*Attention a bien mettre data*/
     getRecipes: function(req, res){
-        database.getAll("recipes",req.query,(recipes) => {
-             res.send(recipes.map(recipe => new Recipe(recipe).data))
-            }
-        )
+        recipe_service.getRecipes(req.query,(recipes) =>
+            res.send(recipes))
     },      
     
     getRecipesById: function(req, res){
-        database.getById("recipes",req.params.id,(recipe) =>
-           res.send(new Recipe(recipe).data)
+        recipe_service.getRecipeById(req.params.id,(recipe) =>
+            res.send(recipe)
         ) 
-        
     },
     
     getAJR: function(req,res){
-        database.getById("recipes",req.params.id,(recipe) => {
-            if (recipe){
-                ingredient_service.getBySynonyme(recipe.ingredients.map(x => x.ingredient.replace(/^ +/gm, '')),(ingredients) => 
-                    res.send(ingredients)
-                    )
-            }else{
-                res.send("erreur")
-            }
-        })
+        recipe_service.getRecipeAJR(req.params.id,(ajr) => 
+            res.send(ajr)
+        )
     },
     
     addRecipe : function(req,res){
-        recipe_service.getRecipeFromUrl(req.body.url,(msg) => res.send(msg));
+        recipe_service.getRecipeFromUrl(req.body.url,(msg) =>
+            res.send(msg)
+        )
     }
     
 }
