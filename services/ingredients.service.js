@@ -51,6 +51,15 @@ var ingredients = {
          })
     },
     
+    
+    /*getFromCSV: function(csvLocation,template){
+        return new Promise((resolve,reject) => {
+            csv.fromPath(csvLocation, {header: true}).on("data",data => {
+                let ingredient =
+            })
+        })
+    },*/
+    
     addIngredients: function(data){
         return new Promise(function(resolve, reject) {
             database.connect((db,dbo) => {
