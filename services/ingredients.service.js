@@ -50,15 +50,30 @@ var ingredients = {
             });
          })
     },
-    
-    
-    /*getFromCSV: function(csvLocation,template){
+
+    getFromCSV: function(csvName){
         return new Promise((resolve,reject) => {
-            csv.fromPath(csvLocation, {header: true}).on("data",data => {
-                let ingredient =
+            let schema = require('../models/csv-schemas/'+csvName+'.csv').schema
+            var dataArray = [];
+            csv.fromPath("./services/csv/"+csvName+".csv", {headers: true})
+            .on("data", data => {
+               let ingredient = {
+                    "name" : data[schema.name],
+                    "synonyme" : [],
+                    "category" : data[schema.category],
+                    "energy_kcal" : data[schema.energy_kcal],
+                    "protein" : data[schema.protein],
+                    "sugar" : data[schema.sugar],
+                    "fat" : data[schema.fat],
+                    "sodium" : data[schema.sodium]
+                }
+               dataArray.push(ingredient);
             })
+            .on("end", () => {
+                resolve(dataArray);
+            });
         })
-    },*/
+    },
     
     addIngredients: function(data){
         return new Promise(function(resolve, reject) {
@@ -76,7 +91,7 @@ var ingredients = {
         database.connect((db,dbo) => {
             dbo.createCollection("ingredients", function(err, res) {
                 if (err) throw err;
-                ingredients.getFromSwissCSV().then(data => ingredients.addIngredients(data)
+                ingredients.getFromCSV("ciqual").then(data => ingredients.addIngredients(data)
                                         .then(log => callback(log))
                                         .catch(err => console.log(err)))
                      .catch(err => console.log(err));
