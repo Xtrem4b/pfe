@@ -25,31 +25,6 @@ var ingredients = {
             }); 
         })
     },
-    
-    getFromSwissCSV: function(){
-        return new Promise((resolve,reject) => {
-            var dataArray = [];
-            csv.fromPath("./services/swiss.csv", {headers: true})
-            .on("data", data => {
-               let ingredient = {
-                    "name" : data["name F"],
-                    "synonyme" : [],
-                    "category" : data["category F"],
-                    "energy_kj" : data["energy kJ"],
-                    "energy_kcal" : data["energy kcal"],
-                    "protein" : data["protein"],
-                    "sugar" : data["sugars"],
-                    "fat" : data["fat, total"],
-                    "cholesterol" : data["cholesterol"],
-                    "sodium" : data["sodium (Na)"]
-                }
-               dataArray.push(ingredient);
-            })
-            .on("end", () => {
-                resolve(dataArray);
-            });
-         })
-    },
 
     getFromCSV: function(csvName){
         return new Promise((resolve,reject) => {
@@ -62,10 +37,10 @@ var ingredients = {
                     "synonyme" : [],
                     "category" : data[schema.category],
                     "energy_kcal" : data[schema.energy_kcal],
-                    "protein" : data[schema.protein],
-                    "sugar" : data[schema.sugar],
-                    "fat" : data[schema.fat],
-                    "sodium" : data[schema.sodium]
+                    "proteine" : data[schema.protein],
+                    "glucide" : data[schema.glucide],
+                    "lipide" : data[schema.lipide],
+                    "sel" : data[schema.sodium]
                 }
                dataArray.push(ingredient);
             })
@@ -87,11 +62,11 @@ var ingredients = {
         })
     },
     
-    create: function(callback){
+    create: function(csvName,callback){
         database.connect((db,dbo) => {
             dbo.createCollection("ingredients", function(err, res) {
                 if (err) throw err;
-                ingredients.getFromCSV("ciqual").then(data => ingredients.addIngredients(data)
+                ingredients.getFromCSV(csvName).then(data => ingredients.addIngredients(data)
                                         .then(log => callback(log))
                                         .catch(err => console.log(err)))
                      .catch(err => console.log(err));

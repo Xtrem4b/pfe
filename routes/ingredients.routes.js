@@ -35,7 +35,7 @@ var ingredients = {
     },
     
     create: function(req,res){
-        ingredient_service.create((msg) => {res.send(msg)})
+        ingredient_service.create(req.body.csvName,(msg) => {res.send(msg)})
     }
     
 }

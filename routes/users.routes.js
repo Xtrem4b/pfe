@@ -36,9 +36,13 @@ var users = {
         })   
     },
     
+    
     addEatenProcessedFood : function(req, res){
         userService.getFoodFromCode(req.body.code,function(product){
             if (product){
+                if (req.body.custom_quantity){
+                    product["custom_quantity"] = req.body.custom_quantity;
+                }
                 userService.addProcessedFood(req.body.id,product,req.body.lunch,function(isOk){
                     res.send(isOk)
                 })

@@ -9,7 +9,7 @@ app.get('/api/ingredients/category', ingredients.category)
 app.get('/api/ingredients/:id', ingredients.ingredientById)
 app.put('/api/ingredients/update', ingredients.updateSynonyme)
 app.get('/api/drop/ingredients',ingredients.reset)
-app.get('/api/create/ingredients',ingredients.create)
+app.post('/api/create/ingredients',ingredients.create)
     
 app.get('/api/recipes', recipes.getRecipes)
 app.get('/api/recipe/:id', recipes.getRecipesById)

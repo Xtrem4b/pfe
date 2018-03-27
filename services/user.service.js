@@ -76,9 +76,8 @@ var userService = {
                     "nutriments" : {
                         calories: product.product.nutriments.energy_value,
                         proteins:product.product.nutriments.proteins,
-                        fat:product.product.nutriments.fat,
+                        lipide:product.product.nutriments.fat,
                         glucide:product.product.nutriments.carbohydrates,
-                        sucre: product.product.nutriments.sugars_value,
                         sel:product.product.nutriments.salt
                     }
             };
