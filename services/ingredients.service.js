@@ -37,7 +37,7 @@ var ingredients = {
                     "synonyme" : [],
                     "category" : data[schema.category],
                     "energy_kcal" : data[schema.energy_kcal],
-                    "proteine" : data[schema.protein],
+                    "proteine" : data[schema.proteine],
                     "glucide" : data[schema.glucide],
                     "lipide" : data[schema.lipide],
                     "sel" : data[schema.sodium]

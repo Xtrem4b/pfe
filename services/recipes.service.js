@@ -1,14 +1,16 @@
 const database = require('../services/db.service')
 const puppeteer = require("puppeteer");
 const ingredient_service = require('../services/ingredients.service');
+const Recipe = require("../models/recipe")
 
 
 var recipes_service = {
     
     getRecipeFromUrl: async function(url,callback){
+        console.log(url)
         let browser = await puppeteer.launch({headless: true});
         let page = await browser.newPage();
-        await page.goto(url);
+        await page.goto(url,{ waitUntil: "networkidle2" });
         let recipe = await page.evaluate(() => {
             console.log("here")
             var ingredientsList = [];
@@ -30,8 +32,9 @@ var recipes_service = {
                 time: time
             };
         });
+        console.log("end soon")
         database.insert("recipes",recipe,(data) => callback(data))
-        await page.waitFor(500);
+        await page.waitFor(1000);
         await browser.close();
     },
     
@@ -41,6 +44,7 @@ var recipes_service = {
             }
         ) 
     },
+    
     
     getRecipeById: function(id,callback){
         database.getById("recipes",id,(recipe) =>

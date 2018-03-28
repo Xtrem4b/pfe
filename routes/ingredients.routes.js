@@ -27,7 +27,7 @@ var ingredients = {
     
     updateSynonyme: function(req, res){
         let values = {$push : {synonyme : req.body.ingredient.replace(/^ +/gm, '') }};
-        database.update("ingredients",req.body.id,values,(data) => res.send(result))
+        database.update("ingredients",req.body.id,values,(data) => res.send(data))
     },
     
     reset: function(req,res){

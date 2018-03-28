@@ -6,7 +6,8 @@ const recipe_service = require('../services/recipes.service');
 
 var recipes = {
     getRecipes: function(req, res){
-        recipe_service.getRecipes(req.query,(recipes) =>
+        let query = (req.query) ? req.query : {};
+        recipe_service.getRecipes(query,(recipes) =>
             res.send(recipes))
     },      
     
@@ -18,7 +19,8 @@ var recipes = {
     
     getAJR: function(req,res){
         recipe_service.getRecipeAJR(req.params.id,(ajr) => 
-            res.send(ajr)
+                                    {console.log(ajr);
+            res.send(ajr)}
         )
     },
     

@@ -102,6 +102,7 @@ var foodService = {
           "cal_coll":0,
           "lip_coll":0,
           "glu_coll":0,
+          "prot_coll":0,
           "sel_coll":0,
           "prot_jour":0,
           "cal_jour":0,

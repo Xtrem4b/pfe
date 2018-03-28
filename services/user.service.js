@@ -6,9 +6,11 @@ const request = require('request');
 var userService = {
     
     register : function(user,callback) {
-        database.findOne("users",{email:user.email},(isIn) =>{
+        let options = {}
+        options.query = {email: user.email}
+        database.findOne("users",options,(isIn) =>{
             if (isIn){
-                callback("L'utilisateur existe déjà")
+                callback()
             }else{
                 let data = {
                         email: user.email,
@@ -23,17 +25,20 @@ var userService = {
     },
       
     updateProfil : function(user,callback){
-        let values = {$set: {information: {sexe: user.sexe, age: user.age, taille : user.taille, poid : user.poid, tabac: user.tabac, activite : user.activite, alimentation: user.alimentation}}};
+        let values = {$set:{information: {sexe: user.sexe, age: user.age, taille : user.taille, poids : user.poids, tabac: user.tabac, activite : user.activite, alimentation: user.alimentation }}};
         
         database.update("users",user.id,values,(msg) => callback(msg))
     },
     
     login: function(email,password,callback) {
-        database.findOne("users",{email: email, password: password},(user) => {
-            if (user){
+        let options = {}
+        options.query = {email: email, password: password}
+        database.findOne("users",options,(data) => {
+            if (data){
+                let user = {id : data._id ,email : data.email, pseudo : data.pseudo, information : data.information};
                 callback(user)
             }else{
-                callback("Aucun utilisateur")
+                callback()
             }
         })
     },
@@ -61,7 +66,7 @@ var userService = {
     },
     
     addProcessedFood: function(id,food,lunchType,callback){
-        let values = {lunch : {processedFood: food, lunchType: lunchType, createdAt: new Date() }} ;
+        let values = {$push:{lunch : {processedFood: food, lunchType: lunchType, createdAt: new Date() }}} ;
          database.update("users",id,values, function(result){
             callback(result)
         })
@@ -69,19 +74,24 @@ var userService = {
     
     getFoodFromCode: function(code,callback){
         request.get({url:"https://fr.openfoodfacts.org/api/v0/produit/"+code, json:true},function(e,r,product){
-             let productInfo = {
-                    "ingredients" : product.product.ingredients_text_debug,
-                    "image" : product.product.image_front_thumb_url,
-                    "quantity" : product.product.quantity,
-                    "nutriments" : {
-                        calories: product.product.nutriments.energy_value,
-                        proteins:product.product.nutriments.proteins,
-                        lipide:product.product.nutriments.fat,
-                        glucide:product.product.nutriments.carbohydrates,
-                        sel:product.product.nutriments.salt
-                    }
-            };
-            callback(productInfo)
+             if (product.status != 0) {
+                 let productInfo = {
+                        "name": product.product.product_name,
+                        "ingredients" : product.product.ingredients_text_debug,
+                        "image" : product.product.image_front_thumb_url,
+                        "quantity" : product.product.quantity,
+                        "nutriments" : {
+                            calories: product.product.nutriments.energy_value,
+                            proteins:product.product.nutriments.proteins,
+                            lipide:product.product.nutriments.fat,
+                            glucide:product.product.nutriments.carbohydrates,
+                            sel:product.product.nutriments.salt
+                        }
+                };
+                callback(productInfo)
+            }else{
+                callback()
+            }
         })
     }     
     

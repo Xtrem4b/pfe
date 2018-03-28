@@ -24,6 +24,7 @@ var database = {
     },
     
     findOne: function(collection,options,callback) {
+        console.log(options.query)
         database.connect((db,dbo) => {
             dbo.collection(collection).findOne(options.query,function (err,data){
                 if (err) throw err;
@@ -77,11 +78,11 @@ var database = {
         });
     },
     
+    /*ATTENTION J AI MODIFIE UPDATE*/
     update: function(collection,id,values,callback){
+        console.log(id)
         database.connect( (db,dbo) => {
-            dbo.collection(collection).update({_id : ObjectID(id)}, {
-             $push: values 
-            },function(err,result){
+            dbo.collection(collection).update({_id : ObjectID(id)},values,function(err,result){
                 if (err) throw err;
                 db.close()
                 callback(result)
