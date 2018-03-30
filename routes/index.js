@@ -23,6 +23,7 @@ app.put('/api/profil/update',users.updateProfil)
 app.post('/api/profil/update/processedFood',users.addEatenProcessedFood)
 app.post('/api/profil/update/eatenRecipe',users.addEatenRecipe)
 app.get('/api/profil/getAJR/:id/:days',users.GetUserAJR)
+app.get('/api/profil/getLunch/:id/:days',users.getLunch)
     
 }
 

@@ -50,6 +50,7 @@ var userService = {
     },
     
     getLunch: function(id,days,callback) {
+        console.log(id+"get lunch"+days)
         database.getLunchByDays(id,days,function(user){
             callback(user)
         })

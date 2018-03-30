@@ -44,6 +44,16 @@ var users = {
         res.send(req.session.user)
     },
     
+    getLunch : function(req, res){
+        userService.getLunch(req.params.id,req.params.days,(data) =>{
+        if (data){
+                res.send(data.lunch)
+            }else{
+                res.status(400).send("Impossible de récuperer les repas")
+            }
+        })
+    },
+    
     addEatenRecipe : function(req, res){
         userService.addEatenRecipe(req.body.id,req.body.recipeID,req.body.lunch, function(isOk){
             if (isOk){
@@ -89,8 +99,9 @@ var users = {
     },
     
     GetUserAJR : function(req,res){
-        userService.getLunch(req.params.id,req.params.days,function(data){
-            foodService.calculAJR(data.lunch,req.params.days,function(ajr){
+        let days = (req.params.days) || 30
+        userService.getLunch(req.params.id,days,function(data){
+            foodService.calculAJR(data.lunch,days,function(ajr){
                 userService.getInfo(req.params.id,function(info){
                     console.log(parseFloat(info.poids))
                     ajr["sexe"] = info.sexe ;
@@ -106,11 +117,21 @@ var users = {
                       url:     'http://localhost:5000/profile',
                       body:    JSON.stringify(ajr)
                     }, function(error, response, body){
-                      console.log(ajr);
-                      console.log(body);
+                        body=JSON.parse(body);
+                        let profil;
+                        switch(parseInt(body.profile)){
+                            case 0: profil = "exces de graisses"; break;
+                            case 1: profil = "exces de sucres"; break;
+                            case 2: profil = "exces de protéines"; break;
+                            case 3: profil =  "carence en protéines"; break;
+                            case 4: profil =  "carence en calories"; break;
+                            case 5: profil =  "exces de sel"; break;
+                            default: profil = "tout va bien"; 
+                        }
+                        
+                      ajr["profil"] = profil;
+                      res.send(ajr);
                     });
-
-                    res.send(ajr);
                 })
             })
         })
